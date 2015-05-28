@@ -2,31 +2,17 @@
 
 {% block title %}{{ title }}|ChengDu Bo Lan Ju {% endblock %}
 
-{% block extrastyle %}<style>
-    #header {
-        background-color: #267BF3;
-    }
-    .module h2, .module caption, .inline-group h2{
-        font-size: 23px;
-    }
-    td, th {
-        line-height: 24px;
-    }
-    #content-related .module h2{
-        color: #650808;
-    }
-    th {
-        font-size: 18px;
-    }
+{% block extrastyle %}
+{% load static %}
+<link rel="stylesheet" type="text/css" media="screen" href="{% static 'css/user.css' %}"/>
+<style  media="screen" type="text/css">
+
 </style>
-
-
-    {% endblock %}
+{% endblock %}
 
 {% block branding %}
 {% load static %}
 <h1 id="site-name"><a href="{% url 'admin:index' %}">成都市博览局爬虫后台管理</a></h1>
-<!--<h2><a href="{% static  'bootstrap/css/bootstrap.css' %}">CSS</a></h2>-->
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

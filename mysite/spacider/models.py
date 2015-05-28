@@ -6,6 +6,14 @@ from django.db import models
 
 class Ruler(models.Model):
 
+    class Meta:
+        verbose_name = u'规则'
+        verbose_name_plural=u'3. 规则'
+
+    USE = (
+        (0, u'未启用'),
+        (1, u'启用')
+    )
     name = models.CharField(max_length=50)
     allow_domains = models.CharField(max_length=256)
     start_urls = models.CharField(max_length=256)
@@ -16,7 +24,7 @@ class Ruler(models.Model):
     body_xpath =  models.CharField(max_length=256)
     publish_time_xpath =  models.CharField(max_length=256)
     source_site_xpath =  models.CharField(max_length=256)
-    enable = models.IntegerField(default=0)
+    enable = models.IntegerField(default=1, choices=USE)
 
     def __unicode__(self):
         return self.name + " "+self.allow_domains
@@ -30,9 +38,13 @@ class Project(models.Model):
             (2,u'中断'),
             (3,u'已经完成'),
             )
+    THETYPE=(
+        (0, u'会展评估'),
+        (1, u'媒体评估'),
+    )
     pname = models.CharField(max_length=256)
     keywords =models.CharField(max_length=256)
-    thetype = models.IntegerField()
+    thetype = models.IntegerField(choices=THETYPE)
     start_time = models.DateTimeField()
     end_time  = models.DateTimeField()
     final_time = models.DateTimeField()
@@ -42,8 +54,15 @@ class Project(models.Model):
     def __unicode__(self):
         return self.pname+":"+self.STATUS[self.status][1]
 
+    class Meta:
+        verbose_name = u'项目'
+        verbose_name_plural=u'1. 项目'
+
 
 class Siteproperty(models.Model):
+    class Meta:
+        verbose_name = u'专家库'
+        verbose_name_plural=u'4. 专家库'
     domain = models.CharField(max_length=256)
     name = models.CharField(max_length=256)
     locate = models.CharField(max_length=256)
@@ -58,6 +77,10 @@ class Siteproperty(models.Model):
 
 
 class Article(models.Model):
+    class Meta:
+        verbose_name = u'文章'
+        verbose_name_plural=u'2. 文章'
+
     SPIDER_SRC=(
             (1,'wuchong'),
             (2,'junpeng'),
@@ -73,10 +96,11 @@ class Article(models.Model):
     source_url = models.CharField(max_length=256, blank=True, null=True)
     #site_property = models.OneToOneField(Siteproperty)
     spider_from = models.IntegerField(default=0, choices=SPIDER_SRC)
+    crawler_time = models.DateTimeField(auto_now_add=True, blank=True)
 
 
     def __unicode__(self):
-        return self.title +"  "+self.pub_time
+        return self.title
 
 
 class RelationAP(models.Model):
