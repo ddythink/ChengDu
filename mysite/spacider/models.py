@@ -50,6 +50,7 @@ class Project(models.Model):
     final_time = models.DateTimeField()
     other  = models.CharField(max_length=256)
     status = models.IntegerField(default=0, choices=STATUS)
+    create_time = models.DateTimeField()
 
     def __unicode__(self):
         return self.pname+":"+self.STATUS[self.status][1]
