@@ -4,11 +4,35 @@ from django.db import models
 
 # Create your models here.
 
+class Siteproperty(models.Model):
+    class Meta:
+        verbose_name = u'属性'
+        verbose_name_plural=u'属性'
+    NATURE = ((1,u"官网"),
+              (2,u"会展类网"),
+              (3,u"普通网"),
+              (4,u"大型新闻网"))
+    FLAG = ((1,u'自动获得'),
+            (2,u"待纠正"),
+            (3,u"已确定"))
+    domain = models.CharField(max_length=256)
+    name = models.CharField(max_length=256)
+    locate = models.CharField(max_length=256)
+    nature = models.SmallIntegerField(default=3, choices=NATURE)
+    ip = models.IntegerField()
+    pv = models.IntegerField()
+    flag = models.SmallIntegerField(default=1, choices=FLAG)
+
+    def __unicode__(self):
+        return self.name+" "+self.domain
+
+
+
 class Ruler(models.Model):
 
     class Meta:
         verbose_name = u'规则'
-        verbose_name_plural=u'3. 规则'
+        verbose_name_plural=u'  规则'
 
     USE = (
         (0, u'未启用'),
@@ -25,6 +49,7 @@ class Ruler(models.Model):
     publish_time_xpath =  models.CharField(max_length=256)
     source_site_xpath =  models.CharField(max_length=256)
     enable = models.IntegerField(default=1, choices=USE)
+    attr = models.ForeignKey(Siteproperty) # 规则增加属性
 
     def __unicode__(self):
         return self.name + " "+self.allow_domains
@@ -48,39 +73,24 @@ class Project(models.Model):
     start_time = models.DateTimeField()
     end_time  = models.DateTimeField()
     final_time = models.DateTimeField()
-    other  = models.CharField(max_length=256)
+    other  = models.CharField(max_length=256, blank=True, null=True)
     status = models.IntegerField(default=0, choices=STATUS)
-    create_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True, blank=True)
 
     def __unicode__(self):
         return self.pname+":"+self.STATUS[self.status][1]
 
     class Meta:
         verbose_name = u'项目'
-        verbose_name_plural=u'1. 项目'
+        verbose_name_plural=u'项目'
 
-
-class Siteproperty(models.Model):
-    class Meta:
-        verbose_name = u'专家库'
-        verbose_name_plural=u'4. 专家库'
-    domain = models.CharField(max_length=256)
-    name = models.CharField(max_length=256)
-    locate = models.CharField(max_length=256)
-    nature = models.SmallIntegerField()
-    ip = models.IntegerField()
-    pv = models.IntegerField()
-    flag = models.SmallIntegerField()
-
-    def __unicode__(self):
-        return self.name+" "+self.domain
 
 
 
 class Article(models.Model):
     class Meta:
         verbose_name = u'文章'
-        verbose_name_plural=u'2. 文章'
+        verbose_name_plural=u' 文章'
 
     SPIDER_SRC=(
             (1,'wuchong'),
@@ -90,7 +100,7 @@ class Article(models.Model):
     #project = models.ForeignKey(Project)
     title = models.CharField(max_length=256)
     url = models.CharField(max_length=256)
-    body = models.TextField()
+    body = models.TextField(blank=True, null=True)
     publish_time = models.DateTimeField()
     source_site = models.CharField(max_length=256, blank=True, null=True)
     source_site_url = models.CharField(max_length=256, blank=True, null=True)
@@ -105,10 +115,16 @@ class Article(models.Model):
 
 
 class RelationAP(models.Model):
-    project = models.OneToOneField(Project)
-    article = models.OneToOneField(Article)
+    class Meta:
+        verbose_name = u'文章与项目'
+        verbose_name_plural=u'文章与项目'
+    project = models.ForeignKey(Project)
+    article = models.ForeignKey(Article)
 
 
 class RelationAS(models.Model):
-    article = models.OneToOneField(Article)
-    site_property = models.OneToOneField(Siteproperty)
+    class Meta:
+        verbose_name = u'文章与属性'
+        verbose_name_plural=u'文章与属性'
+    article = models.ForeignKey(Article)
+    site_property = models.ForeignKey(Siteproperty)
