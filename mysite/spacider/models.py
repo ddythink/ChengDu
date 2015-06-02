@@ -70,9 +70,9 @@ class Project(models.Model):
     pname = models.CharField(max_length=256)
     keywords =models.CharField(max_length=256)
     thetype = models.IntegerField(choices=THETYPE)
-    start_time = models.DateTimeField()
-    end_time  = models.DateTimeField()
-    final_time = models.DateTimeField()
+    start_time = models.DateTimeField(blank=True, null=True)
+    end_time  = models.DateTimeField(blank=True, null=True)
+    final_time = models.DateTimeField(blank=True, null=True)
     other  = models.CharField(max_length=256, blank=True, null=True)
     status = models.IntegerField(default=0, choices=STATUS)
     create_time = models.DateTimeField(auto_now_add=True, blank=True)
@@ -83,9 +83,6 @@ class Project(models.Model):
     class Meta:
         verbose_name = u'项目'
         verbose_name_plural=u'项目'
-
-
-
 
 class Article(models.Model):
     class Meta:
@@ -128,3 +125,19 @@ class RelationAS(models.Model):
         verbose_name_plural=u'文章与属性'
     article = models.ForeignKey(Article)
     site_property = models.ForeignKey(Siteproperty)
+
+class Infotrack(models.Model):
+    SPIDER_SRC=(
+            (1,'wuchong'),
+            (2,'junpeng'),
+            (0,'no set'),
+            )
+    class Meta:
+        verbose_name = u'爬虫动态'
+        verbose_name_plural=u'爬虫动态'
+
+    project = models.ForeignKey(Project)
+    add_num = models.IntegerField(default=0)
+    sum_total = models.IntegerField()
+    run_date    = models.DateTimeField()
+    spider_from = models.IntegerField(default=0, choices=SPIDER_SRC)

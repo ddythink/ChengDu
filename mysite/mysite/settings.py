@@ -38,8 +38,18 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'spacider',
 )
+
+REST_FRAMEWORK = {
+      # Use Django's standard `django.contrib.auth` permissions,
+      # or allow read-only access for unauthenticated users.
+     'DEFAULT_PERMISSION_CLASSES': [
+             'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+     ],
+     'PAGE_SIZE': 10
+}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -80,9 +90,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'chengdudb',
-        'USER': 'root',
+        'USER': 'bolanju',
         'PASSWORD': '123456',
-        'HOST': 'localhost',
+        'HOST': '10.4.20.115',
         'PORT': '3306',
     }
 }

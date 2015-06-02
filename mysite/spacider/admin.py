@@ -3,6 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from .models import Ruler
 from .models import Article, Project, Siteproperty, RelationAP, RelationAS
+from .models import Infotrack
 
 class RulerAdmin(admin.ModelAdmin):
     list_display = ['name', 'start_urls','attr','enable']
@@ -22,10 +23,14 @@ class RelationAPAdmin(admin.ModelAdmin):
 class RelationASAdmin(admin.ModelAdmin):
     list_display = ['id', 'article', 'site_property']
 
+class InfotrackAdmin(admin.ModelAdmin):
+     list_display = ['id', 'project', 'run_date', 'add_num', 'sum','spider_from']
+
 admin.site.register(Ruler, RulerAdmin)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Siteproperty, SitepropertyAdmin)
 admin.site.register(RelationAP, RelationAPAdmin)
 admin.site.register(RelationAS, RelationASAdmin)
+admin.site.register(Infotrack)
 
