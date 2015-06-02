@@ -14,7 +14,7 @@ class RulerSerializer(serializers.HyperlinkedModelSerializer):
 class InfotrackSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Infotrack
-        fields = ('project','add_num', 'run_date')
+        fields = ('add_num', 'sum_total', 'run_date')
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
