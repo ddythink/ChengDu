@@ -14,9 +14,13 @@ class RulerSerializer(serializers.HyperlinkedModelSerializer):
 class InfotrackSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Infotrack
-        fields = ('add_num', 'sum_total', 'run_date')
+        fields = ('id', 'add_num', 'sum_total', 'run_date','spend_time')
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+    infotrack_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Project.objects.all())
     class Meta:
         model = Project
-        fields = ('id','pname', 'keywords', 'thetype', 'start_time','end_time','final_time', 'status', 'create_time')
+        fields = ('id','pname', 'keywords', 'thetype', 'start_time','end_time','create_time','final_time', 'status',
+                  'infotrack_ids')
+
+

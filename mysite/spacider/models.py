@@ -136,8 +136,9 @@ class Infotrack(models.Model):
         verbose_name = u'爬虫动态'
         verbose_name_plural=u'爬虫动态'
 
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, related_name='infotrack_ids')
     add_num = models.IntegerField(default=0)
     sum_total = models.IntegerField()
     run_date    = models.DateTimeField()
+    spend_time = models.IntegerField(blank=True,null=True)
     spider_from = models.IntegerField(default=0, choices=SPIDER_SRC)
