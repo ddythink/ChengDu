@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^api/trend/(?P<project_id>[0-9]+)/$', aviews.infotrack_trend),
     url(r'^api/infotrack/(?P<pk>[0-9]+)/$', aviews.InfotrackDetail.as_view()),
     #-------------------------------------------------------------------------------
-    url(r'^api/project/(?P<pname>[\w]+)/$', rawapi_views.project_by_name),
+    url(r'^api/project/(?P<pname>[\w]+)', rawapi_views.project_by_name),
     url(r'^api/article/sum/(?P<pid>[\d]+)/$', rawapi_views.article_sum_by_project_id),
     url(r'^api/article/after/(?P<pid>[\d]+)/$', rawapi_views.after_display_by_project_id),
 ]
