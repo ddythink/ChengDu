@@ -21,7 +21,8 @@ urlpatterns = [
     #-------------------------------------------------------------------------------
     url(r'^api/project/(?P<pname>[\w]+)', rawapi_views.project_by_name),
     url(r'^api/article/sum/(?P<pid>[\d]+)/$', rawapi_views.article_sum_by_project_id),
-    url(r'^api/article/after/(?P<pid>[\d]+)/$', rawapi_views.after_display_by_project_id),
+    url(r'^api/article/trend/(?P<pid>[\d]+)/$', rawapi_views.article_trend_display_by_project_id),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

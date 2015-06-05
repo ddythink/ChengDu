@@ -10,6 +10,7 @@ from django.utils import timezone
 from .models import RelationAP,Project
 #from django.forms.models import model_to_dict
 #from django.http import JsonResponse
+from .sql import *
 
 def project_by_name(request, pname):
     response_data = dict()
@@ -31,7 +32,28 @@ def article_sum_by_project_id(request, pid):
         response_data['msg'] = u'未找到'
     return HttpResponse(json.dumps(response_data), content_type="application/json",charset="utf-8")
 
-def after_display_by_project_id(request, pid):
+
+def article_trend_display_by_project_id(request, pid):
+    response_data = dict()
+    arti_summy = dict()
+    try:
+        project = Project.objects.get(pk=pid)
+        response_data['id'] = pid
+        response_data['pname'] = project.pname
+        response_data['start_time'] = str(project.start_time)
+        response_data['end_time'] = str(project.end_time)
+        response_data['article_sum'] = project.relationap_set.count()
+        artiles = dict(count_article_by_project_id(int(pid)))
+        for key, value in artiles.iteritems():
+            arti_summy[str(key)] = value
+        response_data['artciles'] = arti_summy
+    except Project.DoesNotExist:
+        response_data['msg'] = u'未找到'
+    return HttpResponse(json.dumps(response_data), content_type="application/json",charset="utf-8")
+
+
+
+def before_display_by_project_id(request, pid):
     response_data = dict()
     try:
         project = Project.objects.get(pk=pid)
