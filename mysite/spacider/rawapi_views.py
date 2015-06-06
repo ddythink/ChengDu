@@ -12,6 +12,8 @@ from .models import RelationAP,Project
 #from django.http import JsonResponse
 from .sql import *
 
+
+
 def project_by_name(request, pname):
     response_data = dict()
     try:
@@ -49,7 +51,7 @@ def article_trend_display_by_project_id(request, pid):
         response_data['artciles'] = arti_summy
     except Project.DoesNotExist:
         response_data['msg'] = u'未找到'
-    return HttpResponse(json.dumps(response_data), content_type="application/json",charset="utf-8")
+    return HttpResponse(json.dumps(response_data, sort_keys=True), content_type="application/json",charset="utf-8")
 
 
 
