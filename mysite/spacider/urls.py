@@ -24,11 +24,11 @@ urlpatterns = [
     url(r'^api/article/sum/(?P<pid>[\d]+)/$', rawapi_views.article_sum_by_project_id),
     url(r'^api/article/trend/(?P<pid>[\d]+)/$', rawapi_views.article_trend_display_by_project_id),
     url(r'^api/radior/(?P<pid>[\d]+)/$', rawapi_views.radior),
-    url(r'^api/trend_report/(?P<id>[\d]+)/$', tapi.trend_report),
-    url(r'^api/convert/(?P<id>[\d]+)/$', tapi.convert),
+    url(r'^api/trend_report/(?P<id>[\d]+)/$', rawapi_views.article_trend_display_by_project_id),
+    url(r'^api/convert/(?P<pid>[\d]+)/$', rawapi_views.convert),
     url(r'^api/media_location/(?P<id>[\d]+)/$', tapi.media_location),
-    url(r'^api/media_structure/(?P<id>[\d]+)/$', tapi.media_structure),
-    url(r'^api/media_impact/(?P<id>[\d]+)/$', tapi.media_impact)
+    url(r'^api/media_structure/(?P<pid>[\d]+)/$', rawapi_views.media_structure),
+    url(r'^api/media_impact/(?P<pid>[\d]+)/$', rawapi_views.media_impact)
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

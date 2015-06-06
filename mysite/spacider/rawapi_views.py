@@ -1,15 +1,10 @@
 # -*- coding:utf-8 -*-
-
-#from bson import json_util
 import json, datetime
 from .models import Project,Article
 from django.core import serializers
-#from django.http import Http404
 from django.http import HttpResponse
 from django.utils import timezone
 from .models import RelationAP,Project
-#from django.forms.models import model_to_dict
-#from django.http import JsonResponse
 from .sql import *
 
 def radior(request, pid):
@@ -58,6 +53,49 @@ def article_sum_by_project_id(request, pid):
     return HttpResponse(json.dumps(response_data), content_type="application/json",charset="utf-8")
 
 
+def media_structure(request, pid):
+    response_data = dict()
+    try:
+        rows = count_article_site(int(pid))
+        csum = 0
+        for item in rows:
+            csum += item[1]
+        for j in rows:
+            response_data[j[4]] = '{0:.2%}'.format(float(j[1]) / float(csum))
+    except Project.DoesNotExist:
+        response_data['msg'] = u'未找到'
+    return HttpResponse(json.dumps(response_data), content_type="application/json",charset="utf-8")
+
+def convert(request, pid):
+    response_data = dict()
+    tmp = list()
+    try:
+        rows = count_publish_time_by_project_id(int(pid))
+        response_data = dict([(item[1], str(item[0].date())) for item in rows])
+        for item in rows:
+            tmp.append({'Media':item[1],
+                        'Reprinted_time':str(item[0].date())})
+        tmp.sort(key=lambda x:x['Reprinted_time'])
+    except Project.DoesNotExist:
+        response_data['msg'] = u'未找到'
+    return HttpResponse(json.dumps(tmp), content_type="application/json", charset="utf-8")
+
+def media_impact(request, pid):
+    response_data = dict()
+    tmp = list()
+    try:
+        rows = ip_PV(int(pid))
+        for item in rows:
+            tmp.append({'Media':item[0],
+                        'IP':item[1],
+                        'PV':item[2]})
+    except Project.DoesNotExist:
+        response_data['msg'] = u'未找到'
+        return HttpResponse(json.dumps(response_data), content_type="application/json", charset="utf-8")
+    return HttpResponse(json.dumps(tmp), content_type="application/json", charset="utf-8")
+
+
+
 def article_trend_display_by_project_id(request, pid):
     response_data = dict()
     arti_summy = dict()
@@ -97,28 +135,6 @@ def before_display_by_project_id(request, pid):
         response_data['msg'] = u'未找到'
     return HttpResponse(json.dumps(response_data), content_type="application/json",charset="utf-8")
 
-
-
-
-# reference
-def article_by_id(request, aid):
-    response_data = dict()
-    try:
-        article = Article.objects.get(pk=aid)
-        #response_data['msg'] = u'找到啦'
-        data = serializers.serialize("json", [article, ], fields=('title','url','pk','spider_from'))
-        response_data = json.dumps({
-            "first_data":json.loads(data),
-            "oosss":"sb"
-        })
-        return HttpResponse(response_data,content_type="application/json",charset="utf-8")
-        #response_data['article'] = data
-        #response_data['article'] = model_to_dict(article)
-    except Article.DoesNotExist:
-        response_data['msg'] = u"未找到"
-    # data = serializers.serialize("json", [Article.objects.get(pk=aid),], fields=('title','url','pk','spider_from'))
-    # response_data['article'] = data
-    #return HttpResponse(json.dumps(response_data, default=json_util.default), content_type="application/json")
 
 
 
