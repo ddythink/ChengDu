@@ -16,5 +16,19 @@ def count_article_by_project_id(pid):
 
     return row
 
+def count_article_site(pid):
+    cursor = connection.cursor()
+    exeSQL = 'SELECT * FROM (SELECT site_property_id, COUNT( * ) FROM  spacider_relationas AS ras,  spacider_article AS a,  ' \
+             'spacider_project AS p,  spacider_relationap AS rap WHERE p.id = rap.project_id AND rap.article_id = ' \
+             'a.id AND a.id = ras.article_id AND p.id =%d GROUP BY site_property_id) AS t JOIN  spacider_siteproperty AS site ON t.site_property_id = site.id' % pid
+
+    print exeSQL
+    cursor.execute(exeSQL)
+    row = cursor.fetchall()
+    return row
+
+def return_sum(pid):
+    return len(count_article_site(pid))
+
 if __name__=="__main__":
     print "OK"

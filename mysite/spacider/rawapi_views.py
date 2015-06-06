@@ -12,6 +12,29 @@ from .models import RelationAP,Project
 #from django.http import JsonResponse
 from .sql import *
 
+def radior(request, pid):
+    response_data = dict()
+    try:
+        project = Project.objects.get(pk=pid)
+        response_data['article_sum'] = project.relationap_set.count()
+        articles = count_article_by_project_id(int(pid))
+        start_date = project.start_time.date()
+        end_date   = project.end_time.date()
+        before_sum = 0
+        after_sum  = 0
+        for item in articles:
+            if item[0] < start_date:
+                before_sum += item[1]
+            elif item[0] > end_date:
+                after_sum += item[1]
+            else:
+                pass
+        response_data['before_sum'] = before_sum
+        response_data['after_sum'] = after_sum
+        response_data['media'] = return_sum(int(pid))
+    except Project.DoesNotExist:
+        response_data['msg'] = u'未找到'
+    return HttpResponse(json.dumps(response_data), content_type="application/json",charset="utf-8")
 
 
 def project_by_name(request, pname):

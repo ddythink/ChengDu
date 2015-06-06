@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^api/project/(?P<pname>[\w]+)', rawapi_views.project_by_name),
     url(r'^api/article/sum/(?P<pid>[\d]+)/$', rawapi_views.article_sum_by_project_id),
     url(r'^api/article/trend/(?P<pid>[\d]+)/$', rawapi_views.article_trend_display_by_project_id),
-    url(r'^api/radior/(?P<id>[\d]+)/$', tapi.rador_graph),
+    url(r'^api/radior/(?P<pid>[\d]+)/$', rawapi_views.radior),
     url(r'^api/trend_report/(?P<id>[\d]+)/$', tapi.trend_report),
     url(r'^api/convert/(?P<id>[\d]+)/$', tapi.convert),
     url(r'^api/media_location/(?P<id>[\d]+)/$', tapi.media_location),
