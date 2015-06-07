@@ -98,21 +98,17 @@ def media_impact(request, pid):
 
 def article_trend_display_by_project_id(request, pid):
     response_data = dict()
-    arti_summy = dict()
+    tmp = list()
     try:
-        project = Project.objects.get(pk=pid)
-        response_data['id'] = pid
-        response_data['pname'] = project.pname
-        response_data['start_time'] = str(project.start_time)
-        response_data['end_time'] = str(project.end_time)
-        response_data['article_sum'] = project.relationap_set.count()
         artiles = dict(count_article_by_project_id(int(pid)))
         for key, value in artiles.iteritems():
-            arti_summy[str(key)] = value
-        response_data['artciles'] = arti_summy
+            tmp.append({'date':str(key), 'num':value})
+        response_data['artciles'] = tmp
+        tmp.sort(key=lambda x:x['date'])
     except Project.DoesNotExist:
         response_data['msg'] = u'未找到'
-    return HttpResponse(json.dumps(response_data, sort_keys=True), content_type="application/json",charset="utf-8")
+        return HttpResponse(json.dumps(response_data), content_type="application/json",charset="utf-8")
+    return HttpResponse(json.dumps(tmp, sort_keys=True), content_type="application/json",charset="utf-8")
 
 
 
