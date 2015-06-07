@@ -47,7 +47,7 @@ def ip_PV(pid):
     exeSQL = 'SELECT site.name, site.ip, site.pv FROM spacider_relationas AS ras, spacider_article AS a, ' \
              'spacider_project AS p, spacider_relationap AS rap, spacider_siteproperty AS site WHERE p.id = ' \
              'rap.project_id AND ras.site_property_id = site.id AND rap.article_id = a.id AND a.id = ras.article_id ' \
-             'AND p.id =%d GROUP BY site.name ORDER BY site.ip DESC , site.pv DESC ' % pid
+             'AND p.id =%d GROUP BY site.name ORDER BY site.ip DESC , site.pv DESC LIMIT 0 , 10' % pid
     print exeSQL
     cursor.execute(exeSQL)
     row = cursor.fetchall()
