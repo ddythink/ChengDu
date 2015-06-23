@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+{% load static %}
+{% load staticfiles %}
+<head>
+    <meta charset="utf-8">
+    <title>成都会展项目评估|{{ project.pname }}</title>
+</head>
+<body>
+<div id="piddiv" class="hide"> <input id="pid" type="hidden" name="myFieldName" value="{{ pid }}"/> </div>
+    <script src="{% static 'echarts-2.2.1/build/dist/echarts-all.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery-1.9.0.js' %}"></script>
+	<script type="text/javascript">
+	//此为控制某个视图显示与否的控件
+		window.onload=function(){setInterval("show()",0)}
+		function show(){
+
+			var check_c1=document.getElementById("c1");
+			var show_c1=document.getElementById("overview");
+			var check_c2=document.getElementById("c2");
+			var show_c2=document.getElementById("reports_rends");
+			var check_c3=document.getElementById("c3");
+			var show_c3=document.getElementById("media_time_specific");
+			var check_c4=document.getElementById("c4");
+			var show_c4=document.getElementById("media_time");
+			var check_c5=document.getElementById("c5");
+			var show_c5=document.getElementById("media_influence");
+
+				if(check_c1.checked)
+				{
+					show_c1.style.display="none";
+				}
+				else
+				{
+					show_c1.style.display="block";
+				}
+				if(check_c2.checked)
+				{
+					show_c2.style.display="none";
+				}
+				else
+				{
+					show_c2.style.display="block";
+				}
+				if(check_c3.checked)
+				{
+					show_c3.style.display="none";
+				}
+				else
+				{
+					show_c3.style.display="block";
+				}
+				if(check_c4.checked)
+				{
+					show_c4.style.display="none";
+				}
+				else
+				{
+					show_c4.style.display="block";
+				}
+				if(check_c5.checked)
+				{
+					show_c5.style.display="none";
+				}
+				else
+				{
+					show_c5.style.display="block";
+				}
+		}
+	</script>
+    <div align="center">
+        <h1>{{ project.pname }}</h1>
+    </div>
+	
+	<div id="ss" align="center">
+	<H2 ><input type="checkbox" id="c1"/>概况overview</H2>
+	</div>
+	<div id="overview"  align="center" style="height:500px">
+    <script type="text/javascript">   
+    //将下面的url替换为API接口的url，取消#1的注释，注释掉#2
+	//{"media": 19, "after_sum": 108, "article_sum": 131, "before_sum": 23}
+    var pid = parseInt($("#pid").attr('value'))
+	$.getJSON("http://10.4.20.115:8000/api/radior/"+pid+"/?format=json",function(data){
+	//alert(data);
+		    var article_num=data.article_sum;				    //#1
+		    var before_num=data.before_sum;					//#1
+		    var after_num=data.after_sum;						//#1
+		    var media_num=data.media;						//#1
+			
+        var option = {
+  		    title : {
+        		text: '概况overview',
+        		subtext: ''
+    		},
+    		tooltip : {
+		        trigger: 'axis'
+		    },
+		    legend: {
+		        orient : 'vertical',
+		        x : 'right',
+		        y : 'bottom',
+		        data:['概况overview']
+		    },
+		    toolbox: {
+		        show : true,
+		        feature : {
+		            mark : {show: true},
+		            dataView : {show: true, readOnly: false},
+		            restore : {show: true},
+		            saveAsImage : {show: true}
+		        }
+		    },
+		    polar : [
+		       {
+		           indicator : [
+		               //为达到最好的展示效果，下列的max值可能需要调整，或者api传过来的数据经过预处理
+		               { text: '文章总量', max: 200},
+		               { text: '会前宣传', max: 200},
+		               { text: '大会余温', max: 200},
+		               { text: '媒体数量', max: 200},
+		            ]
+		        }
+		    ],
+		    calculable : true,
+		    series : [
+		        {
+		            name: '概况overview',
+		            type: 'radar',
+		            data : [
+		                {
+		                    value : [article_num, before_num, after_num, media_num],
+		                    name : '概况overview'
+		                }
+		            ]
+		        }
+		    ]
+		};
+                    
+     var myChart = echarts.init(document.getElementById('overview')); 
+     myChart.setOption(option); 
+     });
+    </script>
+	</div>
+
+
+	<div id="" align="center">
+	<H2 >
+	<input type="checkbox" id="c2"/>报道趋势
+	</H2>
+	</div>
+	<div id="reports_rends" align="center" style="height:500px">
+	<script type="text/javascript">
+	var xreports_rends = [];  
+	var yreports_rends = [];
+    var temp = [];
+    var pid = parseInt($("#pid").attr('value'))
+	$.getJSON("http://10.4.20.115:8000/api/trend_report/"+pid+"/?format=json",function(data){
+		$.each(data,function(index,obj){ 	
+                xreports_rends.push(obj.date);  //#1
+                yreports_rends.push(obj.num);   //#1
+		});
+        var option = {
+        	title : {
+        		text: '报道趋势',
+        		subtext: ''
+    		},
+            tooltip: {
+                show: true,
+				trigger: 'axis'
+            },
+			toolbox: {
+				show : true,
+					feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType: {show: true, type: ['line', 'bar']},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}	
+			},
+            legend: {
+                data:['报道趋势']
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    data : xreports_rends,
+					axisLabel:{interval: 0}
+                }
+            ],
+			calculable : true,
+            yAxis : [
+                {
+                    type : 'value',
+					name : '数量',
+					axisLabel : {
+						formatter: '{value} 篇'
+            }
+                }
+            ],
+            series : [
+                {
+                    "name":"报道趋势",
+                    "type":"line",
+                    "data": yreports_rends
+                }
+            ]
+        };
+     var myChart = echarts.init(document.getElementById('reports_rends')); 
+        myChart.setOption(option); 
+     });
+    </script>
+	</div>
+
+	<div id="" align="center">
+	<H2 ><input type="checkbox" id="c3"/>媒体刊发及转载具体时间</H2>
+	</div>
+    <div id="media_time_specific" align="center" >
+    <script>
+    //将下面的url替换为API接口的url，取消#1的注释，注释掉#2
+    var pid = parseInt($("#pid").attr('value'))
+	$.getJSON("http://10.4.20.115:8000/api/convert/"+pid+"/?format=json",function(data){
+		var tb = document.getElementById("tb");
+		var c=0;
+   		for (var i = 0; i < data.length; i++) {
+   			var row = tb.insertRow(tb.rows.length);
+			var c0 = row.insertCell(0);
+	        c0.innerHTML = ++c;
+	        var c1 = row.insertCell(1);
+	        c1.innerHTML = data[i].Media;
+	        var c2 = row.insertCell(2);
+	        c2.innerHTML = data[i].Reprinted_time;
+
+   		}
+	});
+    </script>
+	<table border="1" id="tb">
+    <tr>
+    <td>序号</td><td>媒体名称</td><td>转载时间</td>
+    </tr>
+	</table>
+    </div>
+
+    <div id="" align="center">
+	<H2 ><input type="checkbox" id="c4"/>媒体刊发及转载时间分布</H2>
+	</div>
+	<div id="media_time" align="center" style="height:300px">
+	<script>
+    //将下面的url替换为API接口的url，取消#1的注释，注释掉#2
+    var pid = parseInt($("#pid").attr('value'))
+	$.getJSON("http://10.4.20.115:8000/api/convert/"+pid+"/?format=json",function(data){
+	    var media = [];
+		var reprinted_time = [];
+		$.each(data,function(index,obj){ 	
+                media.push(obj.Media);  //#1
+                reprinted_time.push(obj.Reprinted_time);   //#1
+		});
+		//alert(reprinted_time);
+		var option = {
+			title : {
+				text : '媒体刊发及转载时间分布',
+				subtext : ''
+			},
+			tooltip : {
+				trigger: 'item',
+				formatter : function (params) {
+					var date = new Date(params.value[0]);
+					data1 = date.getFullYear() + '-'
+						   + (date.getMonth()) + '-'
+						   + date.getDate() + ' '
+						   + date.getHours() + ':'
+						   + date.getMinutes();
+					return params.value[2] + '<br/>'
+					       + data1;
+
+				}
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			dataZoom: {
+				show: false,
+				//start : 70
+			},
+			legend : {
+			    show : false,
+				data : ['series1']
+			},
+			grid: {
+				y2: 80
+			},
+			xAxis : [
+				{
+					type : 'time',
+					splitNumber:10
+				}
+			],
+			yAxis : [
+				{
+					type : 'value',
+					show : false,
+					max:2,
+					min:0
+				}
+			],
+			series : [
+				{
+					name: 'series1',
+					type: 'line',
+					showAllSymbol: true,
+					symbolSize: 3,
+					data: (function () {
+						var d = [];
+						var value;
+						var yyyy;
+						var mm;
+						var dd;
+						var temp;
+						var i;
+						for(i = 0; i < data.length; i++) {
+							//alert(reprinted_time[i]);
+	                        temp =  reprinted_time[i];
+							//alert(temp);
+							yyyy = temp.substr(0,4);
+							mm = temp.substr(5,2);
+							dd = temp.substr(8,2);
+							d.push([
+								//new Date(2014, 9, 1, 0, len * 10000),
+								new Date(yyyy,mm,dd),
+								1,
+								media[i]
+							]);
+						}
+						return d;
+					})()
+				}
+			]
+		};
+							
+		var myChart = echarts.init(document.getElementById('media_time')); 
+		myChart.setOption(option); 
+	});
+    </script>
+	</div>
+
+	<div id="" align="center">
+	<H2 ><input type="checkbox" id="c5"/>媒体传播影响力</H2>
+	</div>
+	<div id="media_influence" align="center" style="height:500px">
+	<script>
+        var pid = parseInt($("#pid").attr('value'))
+	$.getJSON("http://10.4.20.115:8000/api/media_impact/"+pid+"/?format=json",function(data){
+	    var media_num = [];
+		var IP_num = [];
+		var PV_num = [];
+		$.each(data,function(index,obj){ 	
+					media_num.push(obj.Media);  //#1
+					IP_num.push(obj.IP);   //#1
+					PV_num.push(obj.PV);
+			});
+	    var option = {
+			title : {
+				text: '媒体传播影响力',
+				subtext: ''
+			},
+			tooltip : {
+				trigger: 'axis'
+			},
+			legend: {
+				data:['IP量','PV量']
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType : {show: true, type: ['line', 'bar']},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+			xAxis : [
+				{
+					type : 'category',
+					data : media_num
+				}
+			],
+			yAxis : [
+				{
+					type : 'value'
+				}
+			],
+			series : [
+				{
+					name:'IP量',
+					type:'bar',
+					data:IP_num,
+				},
+				{
+					name:'PV量',
+					type:'bar',
+					data:PV_num,
+				}
+			]
+		};
+                    
+		var myChart = echarts.init(document.getElementById('media_influence')); 
+		myChart.setOption(option);
+	});
+	</script>
+	</div>
+</body>

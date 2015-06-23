@@ -15,6 +15,7 @@ router.register(r'project', aviews.ProjectViewSet)
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^report/(?P<pk>[0-9]+)/$', views.report, name='chengdu-report'),
     url(r'^api/', include(router.urls)),
     url(r'^api/project/(?P<pk>[0-9]+)/$', aviews.project_detail),
     url(r'^api/trend/(?P<project_id>[0-9]+)/$', aviews.infotrack_trend),
