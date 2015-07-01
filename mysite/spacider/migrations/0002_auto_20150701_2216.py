@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('spacider', '0010_auto_20150531_1030'),
+        ('spacider', '0001_initial'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='infotrack',
-            name='run_date',
-            field=models.DateTimeField(),
+            model_name='citydata',
+            name='over_3w_area',
+            field=models.FloatField(verbose_name='3\u4e07\u7c73\u4ee5\u4e0a\u5c55\u89c8\u9762\u79ef\u548c'),
         ),
     ]
