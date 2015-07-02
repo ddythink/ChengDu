@@ -182,7 +182,7 @@ class Everyyear(models.Model):
 
   year = models.SmallIntegerField(u'年份', choices=YEAR)
   exhibition = models.IntegerField(u'重大会展活动个数')
-  show = models.IntegerField(u'办展总数量')
+  show_num = models.IntegerField(u'办展总数量')
   nati_confe = models.IntegerField(u'国际会议个数')
   total_area = models.FloatField(u'展览总面积')
   nati_exhibi = models.FloatField(u'国际性展览面积')
