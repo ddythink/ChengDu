@@ -1,6 +1,7 @@
 # -*- coding:utf-8 _*_
 
 from django.db import models
+from .config import YEAR 
 
 # Create your models here.
 
@@ -164,7 +165,7 @@ class Report(models.Model):
 
 class Citydata(models.Model):
 
-    year = models.CharField(u'年度', max_length=4)
+    year = models.SmallIntegerField(u'年份', choices=YEAR)
     city = models.CharField(u'城市名', max_length=25)
     total_area = models.FloatField(u'总展出面积')
     hardware = models.FloatField(u'场馆面积')
@@ -179,7 +180,7 @@ class Citydata(models.Model):
 
 class Everyyear(models.Model):
 
-  year = models.CharField(u'年度', max_length=4)
+  year = models.SmallIntegerField(u'年份', choices=YEAR)
   exhibition = models.IntegerField(u'重大会展活动个数')
   show = models.IntegerField(u'办展总数量')
   nati_confe = models.IntegerField(u'国际会议个数')
