@@ -1,29 +1,28 @@
 # -*- coding:utf-8 _*_
 
 from django.db import models
-from .config import YEAR 
+from .config import YEAR
+from .config import CITY_LOCATE
+from .config import REPORT_TYPE
+from .config import PROJECT_TYPE
+from .config import PROJECT_STATUS
+from .config import SPIDER_SRC
+from .config import NATURE
+from .config import FLAG 
+from .config import USE
 
 # Create your models here.
 
 
 class Siteproperty(models.Model):
 
-    NATURE = ((1, u"官网"),
-              (2, u"会展类网"),
-              (3, u"普通网"),
-              (4, u"大型新闻网"))
-
-    FLAG = ((1, u'自动获得'),
-            (2, u"待纠正"),
-            (3, u"已确定"))
-
     domain = models.CharField(u'域名', max_length=256)
     site_name = models.CharField(u'网站名', max_length=256)
-    locate = models.CharField(u'所属地', max_length=256)
-    nature = models.SmallIntegerField(u'网站类别', default=3, choices=NATURE)
+    locate = models.CharField(u'所属地名', max_length=256)
+    nature = models.SmallIntegerField(u'网站类别', choices=NATURE)
     ip = models.IntegerField(u'IP量')
     pv = models.IntegerField(u'PV量')
-    flag = models.SmallIntegerField(u'数据状态', default=1, choices=FLAG)
+    flag = models.SmallIntegerField(u'数据状态', choices=FLAG)
 
     def __unicode__(self):
         return self.name+" "+self.domain
@@ -34,11 +33,6 @@ class Siteproperty(models.Model):
 
 
 class Rule(models.Model):
-
-    USE = (
-        (0, u'未启用'),
-        (1, u'启用')
-    )
 
     name = models.CharField(u"规则名", max_length=50)
     allow_domains = models.CharField(u'允许域名', max_length=256)
@@ -63,42 +57,24 @@ class Rule(models.Model):
 
 class Project(models.Model):
 
-    STATUS = (
-             (0, u'已创建'),
-             (1, u'正在运行'),
-             (2, u'中断'),
-             (3, u'已经完成'),
-    )
-
-    THETYPE = (
-        (0, u'会展评估'),
-        (1, u'媒体评估'),
-    )
-
-    THELOCATE = (
-        (0, u'成都'),
-        (1, u'重庆'),
-        (2, u'上海')
-    )
-
     pname = models.CharField(u'项目名', max_length=256)
     keywords =models.CharField(u'关键字', max_length=256)
-    locate = models.IntegerField(u'会展属地', choices=THELOCATE, default=0)
-    project_type = models.IntegerField(u'项目类型', choices=THETYPE)
-    exhibition_type = models.CharField(u'会展类型', max_length=256)
+    project_type = models.IntegerField(u'项目类型', choices=PROJECT_TYPE)
+    locate = models.IntegerField(u'会展属地', choices=CITY_LOCATE, default=0)
+    exhibition_type = models.CharField(u'会展类型', max_length=256, blank=True, null=True)
     start_time = models.DateField(u'会展开始时间', blank=True, null=True)
     end_time  = models.DateField(u'会展结束时间', blank=True, null=True)
-    period = models.DateTimeField(u'项目运行时间', blank=True, null=True)
-    com_num_local = models.IntegerField(u'本地企业数量', default=0)
-    com_num_provin = models.IntegerField(u'外省企业数量', default=0)
-    com_num_broad = models.IntegerField(u'国外企业数量', default=0)
-    peo_num_local = models.IntegerField(u'本地观众数量', default=0)
-    peo_num_provin = models.IntegerField(u'外省观众数量', default=0)
-    peo_num_broad = models.IntegerField(u'国外观众数量', default=0)
-    area = models.IntegerField(u'毛面积', default=0)
+    area = models.IntegerField(u'毛面积', blank=True, null=True)
+    com_num_local = models.IntegerField(u'本地企业数量', default=0, blank=True, null=True)
+    com_num_provin = models.IntegerField(u'外省企业数量', default=0, blank=True, null=True)
+    com_num_broad = models.IntegerField(u'国外企业数量', default=0, blank=True, null=True)
+    peo_num_local = models.IntegerField(u'本地观众数量', default=0, blank=True, null=True)
+    peo_num_provin = models.IntegerField(u'外省观众数量', default=0, blank=True, null=True)
+    peo_num_broad = models.IntegerField(u'国外观众数量', default=0, blank=True, null=True)
     industry =  models.CharField(u'涉及主要行业', blank=True, null=True, max_length=256)
-    status = models.IntegerField(u'项目状态', default=0, choices=STATUS)
-    create_time = models.DateTimeField(u'项目创建时间', auto_now_add=True, blank=True)
+    period = models.IntegerField(u'项目运行时间')
+    status = models.IntegerField(u'项目状态', default=0, choices=PROJECT_STATUS)
+    create_time = models.DateTimeField(u'项目创建时间', auto_now_add=True)
 
     def __unicode__(self):
         return self.pname
@@ -110,14 +86,6 @@ class Project(models.Model):
 
 class Article(models.Model):
 
-    SPIDER_SRC=(
-            (1,'wuchong'),
-            (2,'junpeng'),
-            (0,'no set'),
-            )
-
-    project = models.ForeignKey(Project, related_name="pro_articles")
-    site_property = models.ForeignKey(Siteproperty, related_name="site_articles")
     title = models.CharField(u'文章标题', max_length=256)
     url = models.CharField(u'文章URL', max_length=256)
     body = models.TextField(u'文章内容', blank=True, null=True)
@@ -125,8 +93,10 @@ class Article(models.Model):
     source_site = models.CharField(u'源站', max_length=256, blank=True, null=True)
     source_site_url = models.CharField(max_length=256, blank=True, null=True)
     source_url = models.CharField(max_length=256, blank=True, null=True)
-    spider_from = models.IntegerField(u'来源', default=0, choices=SPIDER_SRC)
-    crawler_time = models.DateTimeField(u'爬取时间', auto_now_add=True, blank=True)
+    spider_from = models.IntegerField(u'来源', choices=SPIDER_SRC)
+    crawler_time = models.DateTimeField(u'爬取时间')
+    project = models.ForeignKey(Project, related_name="pro_articles")
+    site_property = models.ForeignKey(Siteproperty, related_name="site_articles")
 
     def __unicode__(self):
         return self.title
@@ -137,27 +107,19 @@ class Article(models.Model):
 
 class Report(models.Model):
 
-    REPORT_TYPE = (
-        (0, u"会展报告8图"),
-        (1, u'媒体报告6图'),
-        (2, u'相同地区4图'),
-        (3, u'不同地区4图'),
-        (4, u'城市对比6图')
-        )
-
     pids = models.CharField(u'项目ID串', max_length=256)
     rname = models.CharField(u'评估名', max_length=256)
     control = models.CharField(u'控制字符串', max_length=256)
     report_type = models.SmallIntegerField(u'展示类型', default=0, choices=REPORT_TYPE)
-    zero = models.TextField(u'开头描述', blank=True, null=True)
-    one = models.TextField(u'规模评估', blank=True, null=True)
-    two = models.TextField(u'雷达图描述', blank=True, null=True)
-    three = models.TextField(u'报道趋势描述', blank=True, null=True)
-    four = models.TextField(u'发布趋势描述', blank=True, null=True)
-    five = models.TextField(u'转发描述', blank=True, null=True)
-    six = models.TextField(u'传播影响力描述', blank=True, null=True)
-    seven = models.TextField(u'媒体地域分布描述', blank=True, null=True)
-    eight = models.TextField(u'媒体结构组成描述', blank=True, null=True)
+    zero = models.TextField(u'开头描述', blank=True, null=True, default=u"这里用于输入报告的描述信息")
+    one = models.TextField(u'规模评估', blank=True, null=True, default=u"这里用于输入报告的描述信息")
+    two = models.TextField(u'雷达图描述', blank=True, null=True, default=u"这里用于输入报告的描述信息")
+    three = models.TextField(u'报道趋势描述', blank=True, null=True, default=u"这里用于输入报告的描述信息")
+    four = models.TextField(u'发布趋势描述', blank=True, null=True, default=u"这里用于输入报告的描述信息")
+    five = models.TextField(u'转发描述', blank=True, null=True, default=u"这里用于输入报告的描述信息")
+    six = models.TextField(u'传播影响力描述', blank=True, null=True, default=u"这里用于输入报告的描述信息")
+    seven = models.TextField(u'媒体地域分布描述', blank=True, null=True, default=u"这里用于输入报告的描述信息")
+    eight = models.TextField(u'媒体结构组成描述', blank=True, null=True, default=u"这里用于输入报告的描述信息")
 
     class Meta:
         verbose_name = u'报告'
