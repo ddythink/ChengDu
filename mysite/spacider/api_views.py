@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from serializers import ArticleSerializer, RulerSerializer
-from serializers import InfotrackSerializer,ProjectSerializer
-from .models import Article, Ruler,Infotrack,Project
+from serializers import ProjectSerializer
+from .models import Article, Rule, Project
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,27 +13,27 @@ class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ArticleSerializer
 
 class RulerViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Ruler.objects.all()
+    queryset = Rule.objects.all()
     serializer_class = RulerSerializer
 
-class InfotrackViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Infotrack.objects.all()
-    serializer_class = InfotrackSerializer
+# class InfotrackViewSet(viewsets.ReadOnlyModelViewSet):
+#     queryset = Infotrack.objects.all()
+#     serializer_class = InfotrackSerializer
 
 class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
-class InfotrackDetail(APIView):
-    def get_object(self, pk):
-        try:
-            return Infotrack.objects.get(pk=pk)
-        except Infotrack.DoesNotExist:
-            raise Http404
-    def get(self, request, pk, format=None):
-        infotrack = self.get_object(pk)
-        serializer = InfotrackSerializer(infotrack)
-        return Response(serializer.data)
+# class InfotrackDetail(APIView):
+#     def get_object(self, pk):
+#         try:
+#             return Infotrack.objects.get(pk=pk)
+#         except Infotrack.DoesNotExist:
+#             raise Http404
+#     def get(self, request, pk, format=None):
+#         infotrack = self.get_object(pk)
+#         serializer = InfotrackSerializer(infotrack)
+#         return Response(serializer.data)
 
 
 

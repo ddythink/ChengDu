@@ -4,7 +4,7 @@ from .models import Project,Article
 from django.core import serializers
 from django.http import HttpResponse
 from django.utils import timezone
-from .models import RelationAP,Project
+from .models import Project
 from .sql import *
 
 def radior(request, pid):
