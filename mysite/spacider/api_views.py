@@ -16,26 +16,10 @@ class RulerViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Rule.objects.all()
     serializer_class = RulerSerializer
 
-# class InfotrackViewSet(viewsets.ReadOnlyModelViewSet):
-#     queryset = Infotrack.objects.all()
-#     serializer_class = InfotrackSerializer
 
 class ProjectViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-
-# class InfotrackDetail(APIView):
-#     def get_object(self, pk):
-#         try:
-#             return Infotrack.objects.get(pk=pk)
-#         except Infotrack.DoesNotExist:
-#             raise Http404
-#     def get(self, request, pk, format=None):
-#         infotrack = self.get_object(pk)
-#         serializer = InfotrackSerializer(infotrack)
-#         return Response(serializer.data)
-
-
 
 @api_view(['GET'])
 def project_detail(request, pk):
@@ -58,4 +42,3 @@ def infotrack_trend(request, project_id):
             return Response(status=status.HTTP_404_NOT_FOUND)
      except Project.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
