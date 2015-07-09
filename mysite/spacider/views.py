@@ -18,5 +18,10 @@ def report(request, pk):
     }
     return render(request,'spacider/report.html', content)
 
+def compare(request):
+    if request.method == 'POST':
+        print request.POST.getlist(u'_selected_action') # this code is important getlist() method
+    return None
+
 
 

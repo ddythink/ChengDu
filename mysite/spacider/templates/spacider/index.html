@@ -16,14 +16,7 @@
 </style>
 
   <link rel="stylesheet" type="text/css" href="/static/admin/css/changelists.css" />
-
-
-
     <script type="text/javascript" src="/admin/jsi18n/"></script>
-
-
-
-
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="/static/admin/css/overrides.css" />
 
@@ -105,18 +98,17 @@
 
         </div>
     </div>
+
+
+<form class="" id="changelist-form" action="/compare/" method="post">{% csrf_token %}
 <div class='pull-left'>
 <div class="actions form-group">
-    <span style="vertical-align:sub">动作</span> <select name="action">
-<option value="" selected="selected">选择项目比较</option>
-<!--<option value="delete_selected"></option>-->
-</select><input class="select-across" name="select_across" type="hidden" value="0" />
+    <span style="vertical-align:sub">动作</span>
+    <select name="action">
+    <option value="" selected="selected">选择项目比较</option>
+    </select>
+    <input class="select-across" name="select_across" type="hidden" value="0" />
     <button type="submit" class="btn btn-default" title="运行选中的动作" name="index" value="0">执行</button>
-
-        <script type="text/javascript">var _actions_icnt="6";</script>
-        <span class="action-counter">6 个中 0 个被选</span>
-
-
 </div>
 </div>
 
@@ -157,12 +149,12 @@
 {% for project in project_list %}
 <tr class="row1">
 
-        <td
-                class="action-checkbox"><input class="action-select" name="_selected_action" type="checkbox"
-                                               value="{{ project.id }}" /></td>
+        <td class="action-checkbox">
+            <input class="action-select" name="_selected_action" type="checkbox" value="{{ project.id }}" />
+        </td>
 
         <th class="field-pname"><a href="#">{{ project.pname }}</a></th>
-        <!--/admin/spacider/project/8/-->
+
 
         <td class="field-keywords">{{ project.keywords }}</td>
 
@@ -197,7 +189,7 @@
     </div>
     <!-- END Content -->
 
-    <footer id="footer"></footer>
+    <!-- <footer  id="footer"> </footer> -->
 </div>
 <!-- END Container -->
 
