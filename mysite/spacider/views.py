@@ -11,10 +11,23 @@ def index(request):
     return render(request, 'spacider/index.html', context)
 
 def report(request, pk):
-    project = get_object_or_404(Project, pk=pk)
+    try:
+        aReport = Report.objects.get(pids=str(pk))
+        rid = aReport.id
+    except Report.DoesNotExist:
+        p = get_object_or_404(Project, pk=pk)
+        rname = p.pname
+        if p.project_type == 0:
+            control = "11111111"
+            report_type = 0
+        else:
+            control = "111111"
+            report_type = 1
+        r = Report(pids=str(pk), rname=rname, control=control, report_type=report_type)
+        r.save()
+        rid = r.id
     content = {
-        'pid': pk,
-        'project': project
+        'rid': rid
     }
     return render(request,'spacider/report.html', content)
 
