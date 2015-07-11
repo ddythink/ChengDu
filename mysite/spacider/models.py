@@ -8,7 +8,7 @@ from .config import PROJECT_TYPE
 from .config import PROJECT_STATUS
 from .config import SPIDER_SRC
 from .config import NATURE
-from .config import FLAG 
+from .config import FLAG
 from .config import USE
 
 # Create your models here.
@@ -25,7 +25,7 @@ class Siteproperty(models.Model):
     flag = models.SmallIntegerField(u'数据状态', choices=FLAG)
 
     def __unicode__(self):
-        return self.name+" "+self.domain
+        return self.site_name+" "+self.domain
 
     class Meta:
         verbose_name = u'属性'
