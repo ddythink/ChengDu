@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-databasenames='qqq'
-usernames='root'
-passwords='root'
+databasenames='chengdu'
+usernames='bolanju'
+passwords='123456'
 
