@@ -30,15 +30,15 @@ def project_detail(request, pk):
     except Project.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['GET'])
-def infotrack_trend(request, project_id):
-     try:
-        project = Project.objects.get(pk=project_id)
-        infotracks = Infotrack.objects.filter(project=project)
-        if infotracks:
-            serializer = InfotrackSerializer(infotracks, many=True)
-            return Response(serializer.data)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-     except Project.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+# @api_view(['GET'])
+# def infotrack_trend(request, project_id):
+#      try:
+#         project = Project.objects.get(pk=project_id)
+#         infotracks = Infotrack.objects.filter(project=project)
+#         if infotracks:
+#             serializer = InfotrackSerializer(infotracks, many=True)
+#             return Response(serializer.data)
+#         else:
+#             return Response(status=status.HTTP_404_NOT_FOUND)
+#      except Project.DoesNotExist:
+#         return Response(status=status.HTTP_404_NOT_FOUND)

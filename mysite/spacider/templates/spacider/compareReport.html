@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <title>{{ form.rname.value }}</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link href="{% static 'umeditor1_2_2-src/themes/default/_css/umeditor.css' %}" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="{% static 'js/jquery-1.9.0.js' %}"></script>
+    <script type="text/javascript" src="{% static 'umeditor1_2_2-src/third-party/jquery.min.js' %}"></script>
+    <script type="text/javascript" charset="utf-8" src="{% static 'umeditor1_2_2-src/umeditor.config.js' %}"></script>
+    <script type="text/javascript" charset="utf-8" src="{% static 'umeditor1_2_2-src/editor_api.js' %}"></script>
+    <script type="text/javascript" src="{% static 'umeditor1_2_2-src/lang/zh-cn/zh-cn.js' %}"></script>
+	<script src="{% static 'echarts-2.2.1/build/dist/echarts-all.js' %}"></script>
+	<link href="{% static 'css/report_button_table.css' %}" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="{% static 'js/url_conf.js' %}"></script>
+</head>
+
+<body>
+<form action="/compare/report/" method="post">
+    {% csrf_token %}
+	<br/><center><div id="edit_first"  name="content" type="text/plain" style="width:80%;height:300px; margin:0 auto;" align="center">AVC</div></center>
+	<br/>	
+	<div id="" align="center">
+	<H4 ><input type="checkbox" id="c1"/>基础数据对比</H4>
+	</div>
+	<div id="basedata_compare"  align="center"  >
+    <table   id="tb1" class="gridtable">
+    <tr>
+    <th>会展名称</th>
+    </tr>
+	<tr>
+    <th>毛面积对比（平方米）</th>
+    </tr>
+	<tr>
+    <th>参展企业涉及的主要行业对比</th>
+    </tr>
+	<tr>
+    <th>参展企业数对比</th>
+    </tr>
+	<tr>
+    <th>观众人数对比</th>
+    </tr>
+	</table>
+	</div>
+	<br/><center><div id="edit_base"  name="content" type="text/plain" style="width:80%;height:300px; margin:0 auto;" align="center">{{form.one.value}}</div></center>
+	<br/>	
+	
+	<div id="" align="center">
+	<H4 ><input type="checkbox" id="c2"/>文章总量与媒体数量对比</H4>
+	</div>
+	<div id="netdata_compare_1"  align="center" style="height:500px">
+	</div>
+	<br/><center><div id="edit_net1"  name="content" type="text/plain" style="width:80%;height:300px; margin:0 auto;" align="center"></div></center>
+	<br/>
+	
+	<div id="" align="center">
+	<H4 ><input type="checkbox" id="c4"/>媒体结构组成对比</H4>
+	</div>
+	<div id="media_struct_compare" align="center" style="height:500px">
+	</div>
+	<br/><center><div id="edit_struct"  name="content" type="text/plain" style="width:80%;height:300px; margin:0 auto;" align="center"></div></center>
+	<br/>
+	
+	<div id="" align="center">
+	<H4 ><input type="checkbox" id="c3"/>宣传力度对比</H4>
+	</div>
+	<div id="netdata_compare_2"  align="center" style="height:500px">
+	</div>
+	<br/><center><div id="edit_net2"  name="content" type="text/plain" style="width:80%;height:300px; margin:0 auto;" align="center"></div></center>
+	<br/>
+	<div id="btns" align = "center"> 
+		<table>
+			<tr>
+				<td>
+					<button class="btn" onclick="getContent()">保存</button>
+					<button class="btn" onclick=" ">取消</button>
+				</td>
+			</tr>
+		</table>
+    </div>
+	
+	 <script type="text/javascript">   
+	 //基础数据对比
+    //将下面的url替换为API接口的url，取消#1的注释，注释掉#2
+	var p1_name;
+	var p2_name;
+	//$.getJSON("http://10.4.20.115:8000/api/radior/4/?format=json",function(data_basedata_compare){ 
+	//alert(data);
+	    var data_basedata_compare = 	
+	           {"p1_name": "2015中国巴蜀国际艺术博览会","p1_gross_area":"10000","p1_industry":"食品、药品、服装","p1_company":"本省100，省10", "p1_viewer_num": "本省1000，外省100",
+				"p2_name": "第十六届成都国际家具工业展览会","p2_gross_area":"20000","p2_industry":"食品、保健品、服装","p2_company":"本省200，省10","p2_viewer_num": "本省2000，外省200"};
+	    p1_name = 	data_basedata_compare.p1_name;
+		p2_name = 	data_basedata_compare.p2_name;
+        var cell=document.getElementById("tb1").rows[0].insertCell(1);
+　　    cell.innerHTML=data_basedata_compare.p1_name;
+  		var cell=document.getElementById("tb1").rows[0].insertCell(2);
+　　    cell.innerHTML=data_basedata_compare.p2_name;
+        var cell=document.getElementById("tb1").rows[1].insertCell(1);
+　　    cell.innerHTML=data_basedata_compare.p1_gross_area;
+        var cell=document.getElementById("tb1").rows[1].insertCell(2);
+　　    cell.innerHTML=data_basedata_compare.p2_gross_area;
+		var cell=document.getElementById("tb1").rows[2].insertCell(1);
+　　    cell.innerHTML=data_basedata_compare.p1_industry;
+		var cell=document.getElementById("tb1").rows[2].insertCell(2);
+　　    cell.innerHTML=data_basedata_compare.p2_industry;
+		var cell=document.getElementById("tb1").rows[3].insertCell(1);
+　　    cell.innerHTML=data_basedata_compare.p1_company;
+		var cell=document.getElementById("tb1").rows[3].insertCell(2);
+　　    cell.innerHTML=data_basedata_compare.p2_company;
+		var cell=document.getElementById("tb1").rows[4].insertCell(1);
+　　    cell.innerHTML=data_basedata_compare.p1_viewer_num;
+		var cell=document.getElementById("tb1").rows[4].insertCell(2);
+　　    cell.innerHTML=data_basedata_compare.p2_viewer_num;
+	//});
+    </script>
+	
+	 <script type="text/javascript">   
+	 //文章总量与媒体数量对比
+    //将下面的url替换为API接口的url，取消#1的注释，注释掉#2
+	//$.getJSON("http://10.4.20.115:8000/api/radior/4/?format=json",function(data_netdata_compare_1){ 
+	//alert(data);
+	    var data_netdata_compare_1 = {"p1_article_num":100,"p1_media_num":10,
+		            "p2_article_num":110,"p2_media_num":12};
+		
+	    var option = {
+			title : {
+				text: '文章总量与媒体数量对比',
+			},
+			tooltip : {
+				trigger: 'axis'
+			},
+			legend: {
+				data:['文章总量','媒体数量']
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType : {show: true, type: ['line', 'bar']},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+			//grid : {'y':80,'y2':100},
+			xAxis : [
+				{
+					type : 'category',
+					data : [p1_name,p2_name]
+				}
+			],
+			yAxis : [
+				{
+					type : 'value',
+				    name : '文章总量',
+				},
+				{
+				    type : 'value',
+				    name : '媒体数量',
+				}
+			],
+			series : [
+				{
+					name:'文章总量',
+					type:'bar',
+					data:[data_netdata_compare_1.p1_article_num,data_netdata_compare_1.p2_article_num]
+				},
+				{
+					name:'媒体数量',
+					type:'bar',
+					yAxisIndex: 1,
+					data:[data_netdata_compare_1.p1_media_num,data_netdata_compare_1.p2_media_num]
+				}
+			]
+
+		};
+	    var myChart = echarts.init(document.getElementById('netdata_compare_1')); 
+        myChart.setOption(option); 
+    // });
+    </script>
+	
+	<script>
+	//媒体结构组成对比
+	//$.getJSON("http://10.4.20.115:8000/api/media_impact/4/?format=json",function(data_media_struct_compare){ 
+	var data_media_struct_compare = {"P1":
+				[
+	                    {value:335, name:'会展专业媒体'},
+						{value:310, name:'普通媒体'},
+						{value:234, name:'本次会展官网'},
+						{value:135, name:'政府官网'}
+				],
+			  "P2":
+				[
+						{value:111, name:'会展专业媒体'},
+						{value:222, name:'普通媒体'},
+						{value:333, name:'本次会展官网'},
+						{value:135, name:'政府官网'}
+				]
+			};
+	var p1 = data_media_struct_compare.P1;
+	//var p2_name = "第十六届成都国际家具工业展览会";
+	var p2 = data_media_struct_compare.P2;
+	var option = {
+			title : {
+				text: '媒体结构组成对比',
+				x:'center'
+			},
+			tooltip : {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				orient : 'vertical',
+				x : 'left',
+				data:['会展专业媒体','普通媒体','本次会展官网','政府官网']
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType : {
+						show: true, 
+						type: ['pie', 'funnel'],
+						option: {
+							funnel: {
+								x: '25%',
+								width: '50%',
+								funnelAlign: 'left',
+								max: 1548
+							}
+						}
+					},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+			series : [
+				{
+					name:p1_name,
+					type:'pie',
+					radius : '55%',
+					center: ['35%', '60%'],
+					data:p1
+				},
+				{
+					name:p2_name,
+					type:'pie',
+					radius : '55%',
+					center: ['65%', '60%'],
+					data:p2
+				}
+			]
+		};
+							
+	    var myChart = echarts.init(document.getElementById('media_struct_compare')); 
+		myChart.setOption(option);
+	//});
+	</script>
+	 <script type="text/javascript">   
+    //将下面的url替换为API接口的url，取消#1的注释，注释掉#2
+	//$.getJSON("http://10.4.20.115:8000/api/radior/4/?format=json",function(data_netdata_compare_2){ 
+	//alert(data);
+	    var data_netdata_compare_2 = {"p1_before_sum":9,"p1_during_sum":100,"p1_after_sum":10,
+		            "p2_before_sum":11,"p2_during_sum":150,"p2_after_sum":12};
+		
+	    var option = {
+			title : {
+				text: '宣传力度对比',
+			},
+			tooltip : {
+				trigger: 'axis'
+			},
+			legend: {
+				data:['会前宣传','会间宣传','会后宣传']
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataView : {show: true, readOnly: false},
+					magicType : {show: true, type: ['line', 'bar']},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			calculable : true,
+			//grid : {'y':80,'y2':100},
+			xAxis : [
+				{
+					type : 'category',
+					data : [p1_name,p2_name]
+				}
+			],
+			yAxis : [
+				{
+				    type : 'value',
+				    name : '文章数量',
+				}
+			],
+			series : [
+				{
+					name:'会前宣传',
+					type:'bar',
+					data:[data_netdata_compare_2.p1_before_sum,data_netdata_compare_2.p2_before_sum]
+				},
+				{
+					name:'会间宣传',
+					type:'bar',
+					//yAxisIndex: 1,
+					data:[data_netdata_compare_2.p1_during_sum,data_netdata_compare_2.p2_during_sum]
+				},
+				{
+					name:'会后宣传',
+					type:'bar',
+					//yAxisIndex: 1,
+					data:[data_netdata_compare_2.p1_after_sum,data_netdata_compare_2.p2_after_sum]
+				}
+			]
+
+		};
+	    var myChart = echarts.init(document.getElementById('netdata_compare_2')); 
+        myChart.setOption(option); 
+    // });
+    </script>
+		<script type="text/javascript">
+	//$.getJSON("http://10.4.20.115:8000/api/media_impact/4/?format=json",function(html_text){ 
+	//});
+	
+	//这里面需要插入转义字符
+	    var html_text = {
+		    "edit_first":"<p style=\"text-align: left;\"><span style=\"font-size:19px;font-family:宋体\">&nbsp; 为了评估网络媒体宣传的效果，收集社会各界对会议的反响，我们利用技术手段对经济日报所发表的报道进行了数据采集，通过数据挖掘技术和可靠的评价体系<span style=\"font-size:19px;font-family:宋体\">为了评估网络媒体宣传的效果，收集社会各界对会议的反响，我们利用技术手段对经济日报所发表的报道进行了数据采集，通过数据挖掘技术和可靠的评价体系对经济日报的报道效果进行深度评估。</span>对经济日报的报道效果进行深度评估。</span></p>",
+			"edit_base":"",
+			"edit_net1":"<p style=\"text-align: left;\"><span style=\"font-size:19px;font-family:宋体\">&nbsp; 为了评估网络媒体宣传的效果，收集社会各界对会议的反响，我们利用技术手段对经济日报所发表的报道进行了数据采集，通过数据挖掘技术和可靠的评价体系<span style=\"font-size:19px;font-family:宋体\">为了评估网络媒体宣传的效果，收集社会各界对会议的反响，我们利用技术手段对经济日报所发表的报道进行了数据采集，通过数据挖掘技术和可靠的评价体系对经济日报的报道效果进行深度评估。</span>对经济日报的报道效果进行深度评估。</span></p>",
+			"edit_struct":"<p style=\"text-align: left;\"><span style=\"font-size:19px;font-family:宋体\">&nbsp; 为了评估网络媒体宣传的效果，收集社会各界对会议的反响，我们利用技术手段对经济日报所发表的报道进行了数据采集，通过数据挖掘技术和可靠的评价体系<span style=\"font-size:19px;font-family:宋体\">为了评估网络媒体宣传的效果，收集社会各界对会议的反响，我们利用技术手段对经济日报所发表的报道进行了数据采集，通过数据挖掘技术和可靠的评价体系对经济日报的报道效果进行深度评估。</span>对经济日报的报道效果进行深度评估。</span></p>",
+			"edit_net2":""
+		};
+        var um_first = UM.getEditor('edit_first');
+		var um_base = UM.getEditor('edit_base');
+		var um_net1 = UM.getEditor('edit_net1');
+		var um_struct = UM.getEditor('edit_struct');
+		var um_net2 = UM.getEditor('edit_net2');
+
+		um_first.setContent(html_text.edit_first);
+		um_base.setContent(html_text.edit_base);
+		um_net1.setContent(html_text.edit_net1);
+		um_struct.setContent(html_text.edit_struct);
+		um_net2.setContent(html_text.edit_net2);
+		
+		var check_c1=document.getElementById("c1");
+		var check_c2=document.getElementById("c2");
+		var check_c3=document.getElementById("c3");
+		var check_c4=document.getElementById("c4");
+
+		
+	function getContent() {
+        var arr = [];
+		var control = [];
+        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+        arr.push("内容为：");
+		/*if(check_c0.checked)
+			control.push(1);
+		else
+		    control.push(0);*/
+		if(check_c1.checked)
+			control.push(1);
+		else
+		    control.push(0);
+		if(check_c2.checked)
+			control.push(1);
+		else
+		    control.push(0);
+		if(check_c3.checked)
+			control.push(1);
+		else
+		    control.push(0);
+		if(check_c4.checked)
+			control.push(1);
+		else
+		    control.push(0);
+	
+		
+        arr.push("edit_first:"+um_first.getContent());
+		arr.push("edit_base:"+um_base.getContent());
+		arr.push("edit_net1:"+um_net1.getContent());
+		arr.push("edit_struct:"+um_struct.getContent());
+		arr.push("edit_net2:"+um_net2.getContent());
+        alert(control.join("\n") +"\n"+ arr.join("\n"));
+		console.log(arr);
+    }
+    </script>
+    </form>
+</body>
+</HTML>

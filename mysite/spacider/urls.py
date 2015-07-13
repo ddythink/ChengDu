@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^compare/$', views.compare, name='compare'),
     url(r'^generate_report/$', views.generate_report, name='generate_report'),
     url(r'^report/(?P<pk>[0-9]+)/$', views.report, name='chengdu-report'),
+    url(r'^compare/report/(?P<pk>[0-9]+)/$', views.returnReport),
     url(r'^api/', include(router.urls)),
     url(r'^api/project/(?P<pk>[0-9]+)/$', aviews.project_detail),
     url(r'^api/trend/(?P<project_id>[0-9]+)/$', aviews.infotrack_trend),

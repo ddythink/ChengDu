@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404
 from .models import Project
 from .models import Report
+from .forms import ReportForm
 
 # Create your views here.
 
@@ -9,6 +10,17 @@ def index(request):
     project_list = Project.objects.all()
     context = {'project_list': project_list}
     return render(request, 'spacider/index.html', context)
+
+
+def returnReport(request, pk):
+    if request.method == 'GET':
+        r = get_object_or_404(Report, pk=pk)
+        form = ReportForm(instance=r)
+
+        return render(request, 'spacider/compareReport.html', {'form':form})
+    else:
+        print "POST"
+
 
 def report(request, pk):
     try:

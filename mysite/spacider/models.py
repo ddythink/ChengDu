@@ -132,6 +132,7 @@ class Citydata(models.Model):
     total_area = models.FloatField(u'总展出面积')
     hardware = models.FloatField(u'场馆面积')
     exhibition_num = models.IntegerField(u'办展总数量')
+    nati_confe = models.IntegerField(u'国际会议个数')
     over_3w = models.IntegerField(u'3万平方米以上个数')
     over_3w_area = models.FloatField(u'3万米以上展览面积和')
 
