@@ -6,6 +6,7 @@
     <title>成都会展项目评估|{{ project.pname }}</title>
 </head>
 <body>
+{{rid}}
 <div id="piddiv" class="hide"> <input id="pid" type="hidden" name="myFieldName" value="{{ pid }}"/> </div>
     <script src="{% static 'echarts-2.2.1/build/dist/echarts-all.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/jquery-1.9.0.js' %}"></script>
@@ -70,12 +71,12 @@
     <div align="center">
         <h1>{{ project.pname }}</h1>
     </div>
-	
+
 	<div id="ss" align="center">
 	<H2 ><input type="checkbox" id="c1"/>概况overview</H2>
 	</div>
 	<div id="overview"  align="center" style="height:500px">
-    <script type="text/javascript">   
+    <script type="text/javascript">
     //将下面的url替换为API接口的url，取消#1的注释，注释掉#2
 	//{"media": 19, "after_sum": 108, "article_sum": 131, "before_sum": 23}
     var pid = parseInt($("#pid").attr('value'))
@@ -85,7 +86,7 @@
 		    var before_num=data.before_sum;					//#1
 		    var after_num=data.after_sum;						//#1
 		    var media_num=data.media;						//#1
-			
+
         var option = {
   		    title : {
         		text: '概况overview',
@@ -134,9 +135,9 @@
 		        }
 		    ]
 		};
-                    
-     var myChart = echarts.init(document.getElementById('overview')); 
-     myChart.setOption(option); 
+
+     var myChart = echarts.init(document.getElementById('overview'));
+     myChart.setOption(option);
      });
     </script>
 	</div>
@@ -149,12 +150,12 @@
 	</div>
 	<div id="reports_rends" align="center" style="height:500px">
 	<script type="text/javascript">
-	var xreports_rends = [];  
+	var xreports_rends = [];
 	var yreports_rends = [];
     var temp = [];
     var pid = parseInt($("#pid").attr('value'))
 	$.getJSON("http://10.4.20.115:8000/api/trend_report/"+pid+"/?format=json",function(data){
-		$.each(data,function(index,obj){ 	
+		$.each(data,function(index,obj){
                 xreports_rends.push(obj.date);  //#1
                 yreports_rends.push(obj.num);   //#1
 		});
@@ -175,7 +176,7 @@
 					magicType: {show: true, type: ['line', 'bar']},
 					restore : {show: true},
 					saveAsImage : {show: true}
-				}	
+				}
 			},
             legend: {
                 data:['报道趋势']
@@ -205,8 +206,8 @@
                 }
             ]
         };
-     var myChart = echarts.init(document.getElementById('reports_rends')); 
-        myChart.setOption(option); 
+     var myChart = echarts.init(document.getElementById('reports_rends'));
+        myChart.setOption(option);
      });
     </script>
 	</div>
@@ -250,7 +251,7 @@
 	$.getJSON("http://10.4.20.115:8000/api/convert/"+pid+"/?format=json",function(data){
 	    var media = [];
 		var reprinted_time = [];
-		$.each(data,function(index,obj){ 	
+		$.each(data,function(index,obj){
                 media.push(obj.Media);  //#1
                 reprinted_time.push(obj.Reprinted_time);   //#1
 		});
@@ -341,9 +342,9 @@
 				}
 			]
 		};
-							
-		var myChart = echarts.init(document.getElementById('media_time')); 
-		myChart.setOption(option); 
+
+		var myChart = echarts.init(document.getElementById('media_time'));
+		myChart.setOption(option);
 	});
     </script>
 	</div>
@@ -358,7 +359,7 @@
 	    var media_num = [];
 		var IP_num = [];
 		var PV_num = [];
-		$.each(data,function(index,obj){ 	
+		$.each(data,function(index,obj){
 					media_num.push(obj.Media);  //#1
 					IP_num.push(obj.IP);   //#1
 					PV_num.push(obj.PV);
@@ -409,8 +410,8 @@
 				}
 			]
 		};
-                    
-		var myChart = echarts.init(document.getElementById('media_influence')); 
+
+		var myChart = echarts.init(document.getElementById('media_influence'));
 		myChart.setOption(option);
 	});
 	</script>

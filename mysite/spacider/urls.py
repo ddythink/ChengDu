@@ -16,6 +16,7 @@ router.register(r'project', aviews.ProjectViewSet)
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^compare/$', views.compare, name='compare'),
+    url(r'^generate_report/$', views.generate_report, name='generate_report'),
     url(r'^report/(?P<pk>[0-9]+)/$', views.report, name='chengdu-report'),
     url(r'^api/', include(router.urls)),
     url(r'^api/project/(?P<pk>[0-9]+)/$', aviews.project_detail),
