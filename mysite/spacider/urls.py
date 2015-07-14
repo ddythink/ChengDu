@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^compare/report/(?P<pk>[0-9]+)/$', views.returnReport),
     url(r'^api/', include(router.urls)),
     url(r'^api/project/(?P<pk>[0-9]+)/$', aviews.project_detail),
-    url(r'^api/trend/(?P<project_id>[0-9]+)/$', aviews.infotrack_trend),
+    #url(r'^api/trend/(?P<project_id>[0-9]+)/$', aviews.infotrack_trend),
     #url(r'^api/infotrack/(?P<pk>[0-9]+)/$', aviews.InfotrackDetail.as_view()),
     #-------------------------------------------------------------------------------
     url(r'^api/project/(?P<pname>[\w]+)', rawapi_views.project_by_name),
